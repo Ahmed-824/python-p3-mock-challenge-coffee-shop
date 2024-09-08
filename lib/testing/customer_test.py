@@ -1,4 +1,4 @@
-import pytest
+import pytest # type: ignore
 
 from classes.many_to_many import Coffee
 from classes.many_to_many import Customer
@@ -22,35 +22,29 @@ class TestCustomer:
         assert customer.name == "Stove"
         
         # comment out the next two lines if using Exceptions
-        customer.name = 1
-        assert customer.name == "Stove"
+      #  customer.name = 1
+       # assert customer.name == "Stove"
         
         assert isinstance(customer.name, str)
 
         # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     customer.name = 1
 
+        with pytest.raises(Exception):
+            customer.name = 1
     def test_name_length(self):
-        """name is between 1 and 15 characters"""
+        """Name is between 1 and 15 characters"""
         customer = Customer("Steve")
         assert len(customer.name) == 5
 
-        # comment out the next two lines if using Exceptions
-        customer.name = ""
-        assert customer.name == "Steve"
-        
-        # comment out the next two lines if using Exceptions
-        customer.name = "TooLongForAName!"
-        assert customer.name == "Steve"
+        # Expect a ValueError when setting an invalid name
+        with pytest.raises(ValueError):
+            customer.name = ""  # Setting to an empty string should raise an error
 
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Customer("TooLongForAName!")
+        with pytest.raises(ValueError):
+            customer.name = "TooLongForAName!"
 
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Customer("")
+        with pytest.raises(ValueError):
+            Customer("")  # Creating a customer with an empty name should raise an error
 
     def test_has_many_orders(self):
         """customer has many orders"""
